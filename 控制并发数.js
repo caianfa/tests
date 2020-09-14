@@ -22,8 +22,7 @@ class Semaphore {
       this._continue(); */
       this._available++;
       let task = this.waiters.shift();
-      if (task)
-          this.take(task);
+      if (task) this.take(task);
   }
   /*  _continue() {
        if (this._available > 0) {
