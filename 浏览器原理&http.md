@@ -15,8 +15,6 @@
 
 
 
-
-
 ------------------------------
 
 举例来说，www.example.com真正的域名是www.example.com.root，简写为www.example.com.。因为，根域名.root对于所有域名都是一样的，所以平时是省略的。
