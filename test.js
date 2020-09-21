@@ -60,3 +60,14 @@ function dfs() {
 dfs(tree)
 console.log(res);
 
+
+
+
+function print(n) {
+  setTimeout(async () => {
+    await console.log(n)
+  }, Math.floor(Math.random()* 1000));
+}
+for (var i = 0; i < 100; i++) {
+  print(i);
+}
