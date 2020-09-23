@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>我是窗口二</div>
+  <form>
+    <h1>postMessage</h1>
+    <fieldset>
+      <input type="text" id="txtMsg">
+      <input type="button" value="sendMsgToParent" onclick="sendMsgToParent()">
+      <input type="button" id="btnCloseMe" onclick="closeMe()" value="closeMe">
+    </fieldset>
+  </form>
+  <script>
+    const txtMsgDom = document.querySelector('#txtMsg')
+    window.addEventListener('message', (e) => {
+      txtMsgDom.value = JSON.stringify(e.data)
+    }, false)
+    function closeMe() {
+      window.close()
+    }
+    function sendMsgToParent() {
+      console.log(window.parent);
+      window.opener.postMessage('thomas cai', '*') // window.opener指的是window.open打开的窗口  window.parent指的是iframe获取父窗口
+    }
+  </script>
+</body>
+
+</html>

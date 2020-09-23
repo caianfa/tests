@@ -11,9 +11,30 @@ const deepClone = (obj) => {
   return Array.isArray(obj) && obj.length ? (clone.length = obj.length) && Array.from(clone) : clone
 }
 
+// MessageChannel实现深拷贝、 可以拷贝undefined和循环引用的对象 但是无法处理函数对象
+let obj = {
+  a: 1,
+  b: {
+    c: 2,
+    d: 3,
+  },
+  f: undefined
+}
+function deepCopy(obj) {
+  return new Promise(resolve => {
+    const { port1, port2 } = new MessageChannel() // MessageChannel是异步的
+    port2.onmessage = e => resolve(e.data)
+    port1.postMessage(obj)
+  })
+}
+
+deepCopy(obj).then(copy => {
+  console.log(copy)
+})
+
 /**
  * 手写深拷贝需要注意的几个点
- * JSON.stringfy 不能处理函数和正则 处理之后变为null 并且无法处理循环引用的情况
+ * JSON.stringfy 不能处理函数和正则 处理之后变为null 切会忽略undefined 并且无法处理循环引用的情况
  * 处理循环引用的问题
  * 处理多种类型 Date RegExp String Number Symbol Error 等内置对象的拷贝
  * 通用遍历性能 while for...in  for   (while性能最高 其次是for)

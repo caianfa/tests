@@ -1,57 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style>
-    #parent {
-      display: flex;
-      width: 200px;
-      height: 200px;
-      max-height: 200px;
-      margin: 0px auto;
-      border: 10px solid red;
-      /* border: 20px solid red; */
-      /* padding: 40px; */
-      /* overflow-x: scroll; */
-      /* overflow-y:hidden; */
-      /* overflow: scroll; */
-      /* -webkit-overflow-scrolling: touch; */
-      /* box-sizing: border-box; */
-    }
-
-    #child1 {
-      width: 150px;
-      height: 100px;
-      background: green;
-    }
-
-    #child2 {
-      width: 150px;
-      height: 100px;
-      background: blue;
-    }
-  </style>
 </head>
-
 <body>
-  <div id="parent">
-    <div id="child1"></div>
-    <div id="child2"></div>
-  </div>
-
+  <div>我是窗口1</div>
+  <form>
+    <fieldset>
+      <input type="button" id="btnOpen" onclick="openChild()" value="openChild">
+      <input type="button" id="btnSendMsg" onclick="sendMessage()" value="sendMessage">
+      <p id="para"></p>
+    </fieldset>
+  </form>
   <script>
-    function print(n) {
-      setTimeout(() => {
-        console.log(n)
-      }, Math.floor(Math.random()* 1000));
+    let childWin
+    const childName = 'popup'
+    const para = document.querySelector('#para')
+
+    window.addEventListener('message', (e) => {
+      console.log(e);
+      para.innerHTML = e.data
+    }, false)
+
+    function openChild() {
+      childWin = window.open('test2.html', childName, 'height=300px, width=500px')
     }
-    for (var i = 0; i < 100; i++) {
-      print(i);
+
+    function sendMessage() {
+      let msg = { pName: 'Bob', pAge: 35 }
+      childWin.postMessage(msg, '*')
+      childWin.focus()
     }
   </script>
 </body>
-
 </html>
