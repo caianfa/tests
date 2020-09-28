@@ -25,12 +25,12 @@
     }, false)
 
     function openChild() {
-      childWin = window.open('test2.html', childName, 'height=300px, width=500px')
+      childWin = window.open('postMessage2.html', childName, 'height=300px, width=500px')
     }
 
     function sendMessage() {
       let msg = { pName: 'Bob', pAge: 35 }
-      childWin.postMessage(msg, '*')
+      childWin.postMessage(msg, '*', [window])
       childWin.focus()
     }
   </script>

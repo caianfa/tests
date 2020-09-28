@@ -12,6 +12,7 @@ const deepClone = (obj) => {
 }
 
 // MessageChannel实现深拷贝、 可以拷贝undefined和循环引用的对象 但是无法处理函数对象
+// MessageChannel 通常用来 webworker兄弟线程间通信 iframe兄弟通信
 let obj = {
   a: 1,
   b: {
