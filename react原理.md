@@ -41,7 +41,7 @@ function FiberNode(
   mode: TypeOfMode,
 ) {
   // 作为静态数据结构的属性
-  this.tag = tag; // Fiber对应组件的类型 FunctionComponent/ClassComponent/HostComponent(原生组件)
+  this.tag = tag; // Fiber对应组件的类型 FunctionComponent/ClassComponent/HostComponent(原生组件)等等
   this.key = key; // key属性
   this.elementType = null; // 大部分情况同type，某些情况不同，比如FunctionComponent使用React.memo包裹
   this.type = null; // 对于 FunctionComponent，指函数本身，对于ClassComponent，指class，对于HostComponent，指DOM节点tagName
@@ -428,7 +428,7 @@ case HostComponent: {
   } else {
     // mount的情况
     // ...省略
-  }
+  } 
   return null;
 }
 ```
@@ -560,9 +560,9 @@ commitRoot(root);
 
 commit阶段的主要工作（即Renderer的工作流程）分为三部分：
 
-- before mutation阶段（执行DOM操作前）
-- mutation阶段（执行DOM操作）
-- layout阶段（执行DOM操作后）
+- **before mutation阶段（执行DOM操作前）**
+- **mutation阶段（执行DOM操作）**
+- **layout阶段（执行DOM操作后）**
   
 在before mutation阶段之前和layout阶段之后还有一些额外工作，涉及到比如useEffect的触发、优先级相关的重置、ref的绑定/解绑。
 
@@ -658,3 +658,185 @@ focusedInstanceHandle = null;
 
 我们重点关注beforeMutation阶段的主函数commitBeforeMutationEffects做了什么。
 
+### commitBeforeMutationEffects
+
+```js
+function commitBeforeMutationEffects() {
+  while (nextEffect !== null) {
+    const current = nextEffect.alternate;
+
+    if (!shouldFireAfterActiveInstanceBlur && focusedInstanceHandle !== null) {
+      // ...focus blur相关
+    }
+
+    const effectTag = nextEffect.effectTag;
+
+    // 调用getSnapshotBeforeUpdate
+    if ((effectTag & Snapshot) !== NoEffect) {
+      commitBeforeMutationEffectOnFiber(current, nextEffect);
+    }
+
+    // 调度useEffect
+    if ((effectTag & Passive) !== NoEffect) {
+      if (!rootDoesHavePassiveEffects) {
+        rootDoesHavePassiveEffects = true;
+        scheduleCallback(NormalSchedulerPriority, () => {
+          flushPassiveEffects();
+          return null;
+        });
+      }
+    }
+    nextEffect = nextEffect.nextEffect;
+  }
+}
+```
+
+整体可以分为三部分：
+
+- 处理DOM节点渲染/删除后的 autoFocus、blur 逻辑。
+- 调用getSnapshotBeforeUpdate生命周期钩子。
+- 调度useEffect。
+
+### 调用getSnapshotBeforeUpdate
+
+commitBeforeMutationEffectOnFiber是commitBeforeMutationLifeCycles的别名。
+在该方法内会调用getSnapshotBeforeUpdate。
+
+从Reactv16开始，**componentWillXXX钩子前增加了UNSAFE_前缀**。
+
+究其原因，是因为**Stack Reconciler重构为Fiber Reconciler后，render阶段的任务可能中断/重新开始，对应的组件在render阶段的生命周期钩子（即componentWillXXX）可能触发多次。**
+
+这种行为和Reactv15不一致，所以标记为UNSAFE_。
+
+为此，React提供了替代的生命周期钩子getSnapshotBeforeUpdate。
+
+我们可以看见，getSnapshotBeforeUpdate是在commit阶段内的before mutation阶段调用的，由于commit阶段是同步的，所以不会遇到多次调用的问题。
+
+### 调度useEffect
+
+在这几行代码内，scheduleCallback方法由Scheduler模块提供，用于以某个优先级异步调度一个回调函数。
+
+```js
+// 调度useEffect
+if ((effectTag & Passive) !== NoEffect) {
+  if (!rootDoesHavePassiveEffects) {
+    rootDoesHavePassiveEffects = true;
+    scheduleCallback(NormalSchedulerPriority, () => {
+      // 触发useEffect
+      flushPassiveEffects();
+      return null;
+    });
+  }
+}
+```
+
+在此处，被异步调度的回调函数就是触发useEffect的方法flushPassiveEffects。
+
+我们接下来讨论useEffect如何被异步调度，以及为什么要异步（而不是同步）调度。
+
+### 如何异步调度
+
+在flushPassiveEffects方法内部会从全局变量rootWithPendingPassiveEffects获取effectList。
+
+关于flushPassiveEffects的具体讲解参照useEffect与useLayoutEffect一节
+
+在completeWork一节我们讲到，effectList中保存了需要执行副作用的Fiber节点。其中副作用包括
+
+- 插入DOM节点（Placement）
+- 更新DOM节点（Update）
+- 删除DOM节点（Deletion）
+
+除此外，当一个FunctionComponent含有useEffect或useLayoutEffect，他对应的Fiber节点也会被赋值effectTag。
+
+在flushPassiveEffects方法内部会遍历rootWithPendingPassiveEffects（即effectList）执行effect回调函数。
+
+------
+
+### 深入理解优先级
+
+状态更新由用户交互产生
+
+### 精简版本useState实现
+
+```js
+let workInProgressHook;
+let isMount = true;
+
+const fiber = {
+  memoizedState: null,
+  stateNode: App
+};
+
+function schedule() {
+  workInProgressHook = fiber.memoizedState;
+  const app = fiber.stateNode();
+  isMount = false;
+  return app;
+}
+
+function dispatchAction(queue, action) {
+  const update = {
+    action,
+    next: null
+  }
+  if (queue.pending === null) {
+    update.next = update;
+  } else {
+    update.next = queue.pending.next;
+    queue.pending.next = update;
+  }
+  queue.pending = update;
+
+  schedule();
+}
+
+function useState(initialState) {
+  let hook;
+
+  if (isMount) {
+    hook = {
+      queue: {
+        pending: null
+      },
+      memoizedState: initialState,
+      next: null
+    }
+    if (!fiber.memoizedState) {
+      fiber.memoizedState = hook;
+    } else {
+      workInProgressHook.next = hook;
+    }
+    workInProgressHook = hook;
+  } else {
+    hook = workInProgressHook;
+    workInProgressHook = workInProgressHook.next;
+  }
+
+  let baseState = hook.memoizedState;
+  if (hook.queue.pending) {
+    let firstUpdate = hook.queue.pending.next;
+
+    do {
+      const action = firstUpdate.action;
+      baseState = action(baseState);
+      firstUpdate = firstUpdate.next;
+    } while (firstUpdate !== hook.queue.pending)
+      hook.queue.pending = null;
+  }
+  hook.memoizedState = baseState;
+
+  return [baseState, dispatchAction.bind(null, hook.queue)];
+}
+
+function App() {
+  const [num, updateNum] = useState(0);
+  console.log(`${isMount ? 'mount' : 'update'} num: `, num);
+  return {
+    click() {
+      updateNum(num => num + 1);
+    }
+  }
+}
+
+window.app = schedule();
+```
