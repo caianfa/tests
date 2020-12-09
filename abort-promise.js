@@ -25,3 +25,11 @@ let promise = new Promise((resolve, reject) => {
 
 let newP = wrapPromise(promise)
 newP.abort()
+
+
+
+// 利用fetch实现一个ajax方法，需要提供abort功能
+
+function ajax(url, options) {
+  return fetch()
+}
