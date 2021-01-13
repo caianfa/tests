@@ -59,7 +59,7 @@ function FiberNode(
   this.pendingProps = pendingProps;
   this.memoizedProps = null;
   this.updateQueue = null;
-  this.memoizedState = null;
+  this.memoizedState = null;  // 保存当前fiber对应的Hooks链表
   this.dependencies = null;
 
   this.mode = mode;
