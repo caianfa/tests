@@ -90,3 +90,33 @@ function useState(initialState) {
 }
 
 /*********************************************  精简hooks实现 end *********************************************/
+
+
+/* 简易版react实现 */
+
+let nextUnitOfWork
+let workInProgressRoot
+
+function workLoop(deadline) {
+  let shouldYiedl = false
+  while (nextUnitOfWork && !shouldYield) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
+    shouldYield = deadline.timeRemaining() < 1
+  }
+
+  if (!nextUnitOfWork && workInProgressRoot) {
+    console.log('render 阶段结束');
+    console.log('最终形成的Fiber树为', workInProgressRoot);
+    commitRoot()
+  }
+
+  requestIdleCallback(workLoop, { timeout: 500 })
+}
+
+function performUnitOfWork(currentFiber) {
+  const next = beginWork()
+
+  if (next === null) {
+    completeWork()
+  }
+}
