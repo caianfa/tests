@@ -111,8 +111,7 @@ console.log(...it);
 
 
 // 使用reduce实现map
-
-Array.prototype._map = function(callback) {
+Array.prototype._map = function (callback) {
   if (typeof callback === 'function') {
     return this.reduce((prev, cur, index, arr) => {
       prev.push(callback(cur, index, arr))
@@ -121,3 +120,32 @@ Array.prototype._map = function(callback) {
   }
 }
 
+
+// 实现new的效果
+// 实例可以访问构造函数原型(constructor.prototype)所在原型链上的属性
+// 如果构造函数返回的结果不是引用数据类型 则返回执行结果的返回值 否则返回实例对象
+function newOperator(constructor, ...args) {
+  let obj = Object.create(constructor.prototype)
+  let res = constructor.apply(obj, args)
+  if (res !== null && (typeof res === 'object' || typeof res === 'function')) {
+    return res
+  }
+  return obj
+}
+
+// 实现bind
+// 对于普通函数，绑定this指向
+// 对于构造函数，要保证原函数的原型对象上的属性不能丢失(构造函数优先)
+// let fn1 = fn.bind(this, 'a', 'b')
+Function.prototype.bind2 = function (context, ...args1) {
+  let self = this
+
+  let fNop = function () { }
+  let fBound = function (...args2) {
+    self.apply(this instanceof fBound ? this : context, args1.concat(args2))
+  }
+  fNop.prototype = this.prototype
+  fBound.prototype = new fNop()
+
+  return fBound
+}

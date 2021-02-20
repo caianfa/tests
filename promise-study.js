@@ -29,7 +29,7 @@ class MyPromise {
     const reject = (failVal) => {
       setTimeout(() => {
         if (this.status !== 'pending') return
-        this.status = 
+        this.status =
         this.failVal = failVal
         this.onRejectedCallbacks.forEach(fn => fn())
       })
@@ -118,9 +118,9 @@ class MyPromise {
       newReject(e)
     }
   }
-  
+
   all(promises) {
-    
+
   }
 }
 
@@ -129,7 +129,7 @@ class MyPromise {
 //   resolve(1);
 // }).then((resp)=>{
 //   console.log(resp); // 1
-//   return 2; 
+//   return 2;
 // }).then((resp)=>{
 //  console.log(resp); // 2
 // })
@@ -173,3 +173,39 @@ new MyPromise((resolve, reject) => {
 }).then((resp) => {
   console.log(resp); // 3
 });
+
+
+// const p = new Promise((resolve, reject) => {
+//   if (Math.random() * 10 > 5) {
+//     resolve('success')
+//   } else {
+//     reject('fail')
+//   }
+// })
+// p.then(() => {} ,() => {})
+class MyPromise {
+  constructor(executor) {
+    this.status = 'pending'
+    this.suceessVal = null
+    this.failVal = null
+
+    const resolve = (value) => {
+      if (this.status !== 'pending') return
+      this.status = 'resolve'
+      this.suceessVal = value
+    }
+    const reject = (reason) => {
+      if (this.status !== 'pending') return
+      this.status = 'reject'
+      this.failVal = reason
+    }
+    try {
+      executor(resolve, reject)
+    } catch(e) {
+      reject(e)
+    }
+  }
+  then(onResolved, onRejected) {
+
+  }
+}

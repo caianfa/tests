@@ -69,7 +69,7 @@ function Parent(name) {
   this.colors = ['red', 'blue', 'green']
 }
 
-Parent.prototype.getName = function() {
+Parent.prototype.getName = function () {
   console.log(this.name);
 }
 
@@ -84,7 +84,7 @@ function Child(name, age) {
  * Child.prototype = new F()
  */
 Child.prototype = Object.create(Parent.prototype)
-Child.prototype.constructor =  Child
+Child.prototype.constructor = Child // 修正 Child.prototype.constructor属性
 
 
 
@@ -151,4 +151,73 @@ function newOperator(Constructor, ...args) {
   let res = Constructor.apply(obj, args)
 
   return typeof res === 'object' || typeof res === 'function' ? res : obj
+}
+
+// 实现bind
+// let foo = { value: 1 }
+// function bar(name, age) { console.log(this.value) }
+// var bindFoo = bar.bind(foo)
+// var obj = new bindFoo('18')
+Function.prototype.bind2 = function(context, ...args1) {
+  let self = this
+  let fBound = function(...args2) {
+    return self.apply(this instanceof self ? this : context, args1.concat(args2))
+  }
+  fBound.prototype = Object.create(self.prototype)
+  return fBound
+}
+
+// Object.create实现
+Object.create = function(proto) {
+  function F() {}
+  F.prototype = proto
+  return new F()
+}
+
+// 实现call  foo.call(obj, 1, 2)
+Function.prototype.call2 = function(context, ...args) {
+  context = context || window
+  context.fn = this
+  let res = eval('context.fn(...args)')
+  delete context.fn
+  return res
+}
+
+Function.prototype.call2 = function(context) {
+  context = context || window
+  context.fn = this
+
+  let args = []
+  for (var i = 1; i < this.arguments.length; i++) {
+    args.push('arguments[' + i + ']')
+  }
+  let res = eval('context.fn('+ args +')')
+  delete context.fn
+  return res
+}
+
+Function.prototype.apply2 = function(context, args) {
+  context = context || window
+  context.fn =  this
+  let arr = []
+  for (let i = 0; i < args.length; i++) {
+    arr.push('args['+ i +']')
+  }
+  let res = eval('context.fn('+ arr +')')
+  delete context.fn
+  return res
+}
+
+// 深拷贝
+function clone(target, map = new WeakMap()) {
+  if (target === null) return target
+  if (typeof target !== 'object') return target
+  if (map.get(target)) return map.get(target)
+
+  let cloneObj = Array.isArray(target) ? [] : {}
+  map.set(target, cloneObj)
+  for (const key in target) {
+    cloneObj[key] = clone(target[key])
+  }
+  return cloneObj
 }
