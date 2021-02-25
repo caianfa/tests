@@ -126,3 +126,33 @@ limitRequest2(
   }
 )
 
+
+
+
+class Scheduler {
+  constructor(limit) {
+    this.limit = 2
+    this.waiters = []
+  }
+  add(promiseCreator) {
+    if (this.limit > 0) {
+      this.limit--
+      promiseCreator().then(() => {
+        this.limit++
+      })
+    } else {
+      this.waiters.push(promiseCreator)
+    }
+  }
+}
+
+const timeout = time => new Promise(resolve => setTimeout(resolve, time))
+const scheduler = new Scheduler(2)
+const addTask = (time, order) => {
+  scheduler.add(() => timeout(time).then(() => console.log(order)))
+}
+
+addTask(1000, '1')
+addTask(500, '2')
+addTask(300, '3')
+addTask(400, '4')

@@ -114,7 +114,7 @@ class MyPromise {
     try {
       let then = data.then
       const resolveFunction = (newData) => {
-        this.resolvePromise(newData, resolve, reject)
+        this.resolvePromise(resPromise, newData, resolve, reject)
       }
       const rejectFunction = (err) => {
         reject(err)

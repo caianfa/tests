@@ -3,10 +3,10 @@ const { asap, async } = require("rxjs")
 // 遍历器的实现
 const itertorable = { 0: 'a', 1: 'b', 2: 'c', length: 3 }
 
-itertorable[Symbol.iterator] = function() {
+itertorable[Symbol.iterator] = function () {
   let index = 0
   return {
-    next: function() {
+    next: function () {
       return { value: this[index], done: index++ === this.length }
     }
   }
@@ -24,11 +24,11 @@ itertorable[Symbol.iterator] = function() {
  * 等到稍后收回执行权的时候，再恢复执行。这种可以并行执行、交换执行权的线程（或函数），就称为协程。
  */
 
- /**
-  * 协程是一种比线程更加轻量级的存在。普通线程是抢先式的，会争夺cpu资源，
-  * 而协程是合作的，可以把协程看成是跑在线程上的任务，一个线程上可以存在多个协程，
-  * 但是在线程上同时只能执行一个协程
-  */
+/**
+ * 协程是一种比线程更加轻量级的存在。普通线程是抢先式的，会争夺cpu资源，
+ * 而协程是合作的，可以把协程看成是跑在线程上的任务，一个线程上可以存在多个协程，
+ * 但是在线程上同时只能执行一个协程
+ */
 
 // 执行器 通常，我们把执行生成器的代码封装成一个函数，并把这个执行生成器代码的函数称为执行器,co 模块就是一个著名的执行器
 // co的原理
@@ -63,3 +63,15 @@ function co(iterator) {
 返回值是 Promise。async 函数返回值是 Promise 对象，比 Generator 函数返回的 Iterator 对象方便，可以直接使用 then() 方法进行调用。
  */
 
+
+
+// for...of实现
+function forOf(obj, cb) {
+  let iterator = obj[Symbol.iterator]()
+  let result = iterator.next()
+
+  while(!result.done) {
+    cb(result.value)
+    result = iterator.next()
+  }
+}

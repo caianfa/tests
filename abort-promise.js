@@ -16,14 +16,13 @@ function wrapPromise(p1) {
   return p
 }
 
-let promise = new Promise((resolve, reject) => {
+
+let newP = wrapPromise(new Promise((resolve, reject) => {
   setTimeout(() => {
-    console.log('resolve');
     resolve()
   }, 3000)
-})
-
-let newP = wrapPromise(promise)
+}))
+newP.then(() => {}, () => { console.log('fail'); })
 newP.abort()
 
 
