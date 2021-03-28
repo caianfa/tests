@@ -12,7 +12,7 @@ https://github.com/jingzhiMo/jingzhiMo.github.io/issues/19
 
 - Reconciler（协调器）—— 负责找出变化的组件
 - Renderer（渲染器）—— 负责将变化的组件渲染到页面上
-  
+
 ## Fiber
 
 React Fiber可以理解为：
@@ -171,8 +171,8 @@ function beginWork(
 - current：当前组件对应的Fiber节点在上一次更新时的Fiber节点，即workInProgress.alternatecurrent：当前组件对应的Fiber节点在上一次更新时的Fiber节点，即workInProgress.alternate
 - workInProgress：当前组件对应的Fiber节点
 - renderLanes：优先级相关，在讲解Scheduler时再讲解
-  
-从双缓存机制一节我们知道，除fiberRootNode以外， 组件mount时，由于是首次渲染，是不存在当前组件对应的Fiber节点在上一次更新时的Fiber节点，即mount时current === null。  
+
+从双缓存机制一节我们知道，除fiberRootNode以外， 组件mount时，由于是首次渲染，是不存在当前组件对应的Fiber节点在上一次更新时的Fiber节点，即mount时current === null。
 组件update时，由于之前已经mount过，所以current !== null。
 所以我们可以通过current === null ?来区分组件是处于mount还是update。
 基于此原因，beginWork的工作可以分为两部分：
@@ -203,13 +203,13 @@ function beginWork(
 
   // mount时：根据tag不同，创建不同的子Fiber节点
   switch (workInProgress.tag) {
-    case IndeterminateComponent: 
+    case IndeterminateComponent:
       // ...省略
-    case LazyComponent: 
+    case LazyComponent:
       // ...省略
-    case FunctionComponent: 
+    case FunctionComponent:
       // ...省略
-    case ClassComponent: 
+    case ClassComponent:
       // ...省略
     case HostRoot:
       // ...省略
@@ -228,7 +228,7 @@ function beginWork(
 
 1. oldProps === newProps && workInProgress.type === current.type，即props与fiber.type不变
 2. !includesSomeLane(renderLanes, updateLanes)，即当前Fiber节点优先级不够，会在讲解Scheduler时介绍
-  
+
 ```js
 if (current !== null) {
     const oldProps = current.memoizedProps;
@@ -267,13 +267,13 @@ if (current !== null) {
 ```js
 // mount时：根据tag不同，创建不同的Fiber节点
 switch (workInProgress.tag) {
-  case IndeterminateComponent: 
+  case IndeterminateComponent:
     // ...省略
-  case LazyComponent: 
+  case LazyComponent:
     // ...省略
-  case FunctionComponent: 
+  case FunctionComponent:
     // ...省略
-  case ClassComponent: 
+  case ClassComponent:
     // ...省略
   case HostRoot:
     // ...省略
@@ -428,7 +428,7 @@ case HostComponent: {
   } else {
     // mount的情况
     // ...省略
-  } 
+  }
   return null;
 }
 ```
@@ -563,7 +563,7 @@ commit阶段的主要工作（即Renderer的工作流程）分为三部分：
 - **before mutation阶段（执行DOM操作前）**
 - **mutation阶段（执行DOM操作）**
 - **layout阶段（执行DOM操作后）**
-  
+
 在before mutation阶段之前和layout阶段之后还有一些额外工作，涉及到比如useEffect的触发、优先级相关的重置、ref的绑定/解绑。
 
 ## before mutation之前
