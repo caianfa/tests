@@ -1,0 +1,431 @@
+[
+  {
+    "type": "userBar",
+    "name": "用户状态栏",
+    "icon": {
+      "src": "http://cdn-qcloud.zhongan.com/a00000/welfare/ZALogo.png"
+    },
+    "title": "{{userInfo.name}}",
+    "uid": "AA@#$LG"
+  },
+  {
+    "type": "tabs",
+    "name": "",
+    "tabs": [
+      {
+        "name": "全部订单",
+        "key": "status",
+        "value": [],
+        "events": {
+          "id": "displayOrderTabs",
+          "dataSourceKey": "allOrderList",
+          "key": "status",
+          "value": []
+        }
+      },
+      {
+        "name": "未完成",
+        "key": "status",
+        "value": [
+          1,
+          3
+        ],
+        "events": {
+          "id": "displayOrderTabs",
+          "dataSourceKey": "allOrderList",
+          "key": "status",
+          "value": [
+            1,
+            3
+          ]
+        }
+      },
+      {
+        "name": "已完成",
+        "key": "status",
+        "value": [
+          4,
+          5
+        ],
+        "events": {
+          "id": "displayOrderTabs",
+          "dataSourceKey": "allOrderList",
+          "key": "status",
+          "value": [
+            4,
+            5
+          ]
+        }
+      },
+      {
+        "name": "已取消",
+        "key": "status",
+        "value": [
+          6
+        ],
+        "events": {
+          "id": "displayOrderTabs",
+          "dataSourceKey": "allOrderList",
+          "key": "status",
+          "value": [
+            6
+          ]
+        }
+      }
+    ],
+    "style": {
+      "height": "1.2rem",
+      "backgroundColor": "#fff"
+    },
+    "uid": "2343453552"
+  },
+  {
+    "type": "orderList",
+    "name": "订单",
+    "uid": "26ISK7NAK1",
+    "style": [],
+    "sub_entry": [
+      {
+        "type": "package",
+        "name": "包裹层",
+        "style": {
+          "margin": "0.3rem 0.3rem 0",
+          "backgroundColor": "rgb(255, 254, 254)",
+          "padding": "0 0.3rem",
+          "boxShadow": "0 10px 30px 0 rgba(0,0,0,0.08)",
+          "borderRadius": "0.2rem",
+          "color": "rgb(144, 144, 144)"
+        },
+        "events": {
+          "id": "operateOrder",
+          "statusSource": "status",
+          "statusMap": {
+            "1": "confirm/planProcessed",
+            "3": "confirm/plan",
+            "4": "order/detail",
+            "5": "order/detail",
+            "6": "order/detail"
+          },
+          "url": "",
+          "type": "link",
+          "param": {
+            "orderNo": ""
+          }
+        },
+        "sub_entry": [
+          {
+            "type": "cell",
+            "name": "标题",
+            "label": "<p style=\"width:6rem;text-overflow: ellipsis;white-space: nowrap;\">订单号：{{orderNo}}",
+            "statusSource": "status",
+            "statusMap": {
+              "6": "<img style=\"width: 0.32rem; height: 0.34rem;\" src=\"https://cdn-qcloud.zhongan.com/a00000/welfare/static/icon/delete.png\"/>"
+            },
+            "statusType": "text",
+            "value": "{{statusStr}}",
+            "valueEvents": {
+              "id": "orderDeleteModal",
+              "modalData": {
+                "message": "确认删除?"
+              },
+              "nextEvents": {
+                "id": "deleteOrder",
+                "param": {
+                  "orderNo": ""
+                },
+                "nextEvents": {
+                  "id": "getOrderList",
+                  "param": []
+                }
+              }
+            },
+            "textAlign": "between",
+            "style": {
+              "height": "0.8rem",
+              "borderBottom": "1px solid #efefef"
+            },
+            "uid": "6MUAWBT3"
+          },
+          {
+            "type": "package",
+            "name": "包裹层",
+            "style": [],
+            "dataSource": "planList",
+            "sub_entry": [
+              {
+                "type": "package",
+                "name": "包裹层",
+                "style": [],
+                "sub_entry": [
+                  {
+                    "type": "cell",
+                    "name": "",
+                    "label": "<p style=\"font-size: 0.26rem;\"><span style=\"font-size: 0.32rem;color: #464646;\">{{JSON.stringify('hhhh')}}（{{suiteAge.min.value}}{{suiteAge.min.unit}}-{{suiteAge.max.value}}{{suiteAge.max.unit}}）",
+                    "value": "",
+                    "style": {
+                      "marginTop": "0.2rem"
+                    },
+                    "uid": "6MUAWBT1"
+                  },
+                  {
+                    "type": "cell",
+                    "name": "",
+                    "label": "<p>被保人：{{name}}",
+                    "style": {
+                      "fontSize": "0.26rem",
+                      "height": "0.45rem"
+                    },
+                    "uid": "6MUAWB3T23"
+                  },
+                  {
+                    "type": "cell",
+                    "label": "<p>保障期限：{{effectiveDate}}至{{expiryDate}}",
+                    "style": {
+                      "fontSize": "0.26rem"
+                    },
+                    "uid": "6MUAWBT32344"
+                  }
+                ]
+              }
+            ],
+            "uid": "6MUAWBTS3"
+          },
+          {
+            "type": "button",
+            "name": "按钮",
+            "viewType": 1,
+            "viewGap": 9,
+            "viewSize": "xs",
+            "isSelected": true,
+            "style": {
+              "marginTop": "0.3rem",
+              "borderTop": "1px solid #efefef",
+              "padding": "0.25rem 0",
+              "overflow": "hidden"
+            },
+            "statusSource": "status",
+            "statusMap": {
+              "1": [
+                {
+                  "title": "待处理",
+                  "style": {
+                    "border": "none",
+                    "width": "1.4rem",
+                    "height": "0.5rem",
+                    "lineHeight": "0.5rem",
+                    "boxShadow": "0 8px 20px 0 rgba(255,182,100,0.41)",
+                    "backgroundImage": "linear-gradient(-90deg, #FFCB47 0%, #FFB467 100%)",
+                    "color": "#fff",
+                    "borderRadius": "0.5rem",
+                    "fontSize": "0.28rem",
+                    "float": "right"
+                  },
+                  "type": "span",
+                  "events": {
+                    "id": "operateOrder",
+                    "url": "confirm/planProcessed",
+                    "type": "link",
+                    "param": {
+                      "orderNo": ""
+                    }
+                  },
+                  "uid": "QDTPYDWTTJ"
+                }
+              ],
+              "3": [
+                {
+                  "title": "待支付",
+                  "style": {
+                    "border": "none",
+                    "width": "1.4rem",
+                    "height": "0.5rem",
+                    "lineHeight": "0.5rem",
+                    "backgroundImage": "linear-gradient(-90deg, #F3B659 0%, #F88257 54%, #F85757 93%)",
+                    "boxShadow": "0 8px 20px 0 rgba(255,182,100,0.41)",
+                    "color": "#fff",
+                    "borderRadius": "0.5rem",
+                    "fontSize": "0.28rem",
+                    "float": "right"
+                  },
+                  "type": "span",
+                  "events": {
+                    "id": "operateOrder",
+                    "url": "confirm/plan",
+                    "type": "link",
+                    "param": {
+                      "orderNo": ""
+                    }
+                  },
+                  "uid": "QDTPYDWTTJ"
+                }
+              ],
+              "4": [
+                {
+                  "title": "待出单",
+                  "style": {
+                    "border": "none",
+                    "width": "1.4rem",
+                    "height": "0.5rem",
+                    "lineHeight": "0.5rem",
+                    "backgroundImage": "linear-gradient(90deg, #00C9C5 13%, #59DCBD 87%)",
+                    "boxShadow": "0 8px 20px 0 rgba(6,203,197,0.40)",
+                    "color": "#fff",
+                    "borderRadius": "0.5rem",
+                    "fontSize": "0.28rem",
+                    "float": "right"
+                  },
+                  "type": "span",
+                  "events": {
+                    "id": "operateOrder",
+                    "url": "order/detail",
+                    "type": "link",
+                    "param": {
+                      "orderNo": ""
+                    }
+                  },
+                  "uid": "QDTPYDWTTJ"
+                }
+              ],
+              "5": [
+                {
+                  "title": "已完成",
+                  "style": {
+                    "border": "none",
+                    "width": "1.4rem",
+                    "height": "0.5rem",
+                    "lineHeight": "0.5rem",
+                    "backgroundImage": "linear-gradient(90deg, #00C9C5 13%, #59DCBD 87%)",
+                    "boxShadow": "0 8px 20px 0 rgba(6,203,197,0.40)",
+                    "color": "#fff",
+                    "borderRadius": "0.5rem",
+                    "fontSize": "0.28rem",
+                    "float": "right"
+                  },
+                  "type": "span",
+                  "events": {
+                    "id": "operateOrder",
+                    "url": "order/detail",
+                    "type": "link",
+                    "param": {
+                      "orderNo": ""
+                    }
+                  },
+                  "uid": "QDTPYDWTTJ"
+                }
+              ],
+              "6": [
+                {
+                  "title": "已取消",
+                  "style": {
+                    "border": "none",
+                    "width": "1.4rem",
+                    "height": "0.5rem",
+                    "lineHeight": "0.5rem",
+                    "background": "rgba(0,0,0,0.05)",
+                    "color": "#999",
+                    "borderRadius": "0.5rem",
+                    "fontSize": "0.28rem",
+                    "float": "right"
+                  },
+                  "type": "span",
+                  "events": {
+                    "id": "operateOrder",
+                    "url": "order/detail",
+                    "type": "link",
+                    "param": {
+                      "orderNo": ""
+                    }
+                  },
+                  "uid": "QDTPYDWTTJ"
+                }
+              ]
+            },
+            "sub_entry": [],
+            "uid": "26ISK7NK"
+          }
+        ],
+        "uid": "26ISK7NAK"
+      }
+    ],
+    "nodata": {
+      "type": "nodata",
+      "text": "<p>您还没有相关订单",
+      "style": {
+        "paddingTop": "1.2rem",
+        "color": "#464646"
+      },
+      "img": "https://cdn-qcloud.zhongan.com/a00000/welfare/static/health_fail.png",
+      "imgStyle": {
+        "width": "2.55rem"
+      },
+      "uid": "26ISK7NAK1",
+      "sub_entry": [
+        {
+          "type": "button",
+          "name": "按钮",
+          "viewType": 1,
+          "viewGap": 9,
+          "viewSize": "md",
+          "isSelected": true,
+          "style": {
+            "borderTop": "1px solid #efefef",
+            "overflow": "hidden"
+          },
+          "sub_entry": [
+            {
+              "title": "立即添加",
+              "style": {
+                "height": "0.9rem",
+                "width": "4.5rem",
+                "margin": "0.54rem auto",
+                "border": "none",
+                "background": "#00BC70",
+                "color": "#fff",
+                "borderRadius": 50,
+                "fontSize": "0.32rem"
+              },
+              "type": "link",
+              "url": "plan",
+              "events": [],
+              "uid": "QDTPYDWTTJ"
+            }
+          ],
+          "uid": "26ISK7N222K"
+        }
+      ]
+    }
+  },
+  {
+    "type": "tabbar",
+    "name": "",
+    "tabs": [
+      {
+        "name": "首页",
+        "link": "/site/plan",
+        "params": {
+          "channelCode": 1,
+          "policyNo": 1,
+          "projectId": 1
+        },
+        "backgroundSrc": "https://cdn-qcloud.zhongan.com/a00000/welfare/my_plan_icon.png"
+      },
+      {
+        "name": "订单",
+        "link": "/site/order",
+        "params": {
+          "channelCode": 1,
+          "policyNo": 1,
+          "projectId": 1
+        },
+        "backgroundSrc": "https://cdn-qcloud.zhongan.com/a00000/welfare/my_order_icon.png"
+      }
+    ],
+    "style": {
+      "color": "#fff"
+    },
+    "activeStyle": {
+      "color": "#00bc70"
+    },
+    "uid": "2343453512"
+  }
+]
