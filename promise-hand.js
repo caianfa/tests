@@ -1,62 +1,100 @@
-const PENDING = 'pending'
-const FULFILLED = 'fulfilled'
-const REJECTED = 'rejected'
+const PENDING = Symbol('PENDING')
+const FULFILLED = Symbol('FULFILLED')
+const REJECTED = Symbol('REJECTED')
 
-class MyPromise {
+class TestPromise {
   static resolve(value) {
-    return new Promise((resolve, reject) => {
-      resolve()
+    return new TestPromise((resolve) => {
+      resolve(value)
     })
   }
 
   static reject(reason) {
-    return new Promise((resolve, reject) => {
-      reject()
+    return new TestPromise((_resolve, reject) => {
+      reject(reason)
     })
   }
 
-  constructor(exectuor) {
+  static all(promises) {
+    return new TestPromise((resolve, reject) => {
+      let count = 0
+      let res = []
+
+      for (let i = 0; i < promises.length; i++) {
+        let curPromise = promises[i]
+        curPromise.then((value) => {
+          if (count < promises.length) {
+            count++
+            res[i] = value
+          } else {
+            resolve(res)
+          }
+        }, reject)
+      }
+    })
+  }
+
+  static allSettled(promises) {
+    return TestPromise.all(
+      promises.map(promise => {
+        promise
+          .then(value => ({ status: 'fulfilled', value }))
+          .catch(reason => ({ status: 'rejected', reason }))
+      })
+    )
+  }
+
+  static race(promises) {
+    return new TestPromise((resolve, reject) => {
+      for (let i = 0; i < promises.length; i++) {
+        let curPromise = promises[i]
+        curPromise.then(resolve, reject)
+      }
+    })
+  }
+
+  constructor(executor) {
     this.status = ''
     this.successVal = ''
-    this.failedVal = ''
+    this.failVal = ''
     this.onResolvedCallbacks = []
     this.onRejectedCallbacks = []
 
     const resolve = (value) => {
       setTimeout(() => {
-        if (this.status !== PENDING) return
-        this.status = FULFILLED
-        this.successVal = value
-        this.onResolvedCallbacks.forEach(fn => fn())
+        if (this.status === PENDING) {
+          this.status = FULFILLED
+          this.successVal = value
+          this.onResolvedCallbacks.forEach(fn => fn())
+        }
       })
     }
 
     const reject = (reason) => {
       setTimeout(() => {
-        if (this.status !== PENDING) return
-        this.status = REJECTED
-        this.failedVal = reason
-        this.onRejectedCallbacks.forEach(fn => fn())
+        if (this.status === PENDING) {
+          this.status = REJECTED
+          this.failVal = reason
+          this.onRejectedCallbacks.forEach(fn => fn())
+        }
       })
     }
 
     try {
-      exectuor(resolve, reject)
+      executor(resolve, reject)
     } catch (e) {
       reject(e)
     }
   }
 
-  then(resolvedFn, rejectedFn) {
-    resolvedFn = typeof resolvedFn === 'function' ? resolvedFn : val => val
-    rejectedFn = typeof rejectedFn === 'function' ? rejectedFn : err => { throw err }
+  then(onResolved, onRejected) {
     let resPromise
 
     switch (this.status) {
       case FULFILLED:
-        resPromise = new MyPromise((resolve, reject) => {
+        resPromise = new TestPromise((resolve, reject) => {
           try {
-            let data = resolvedFn(this.successVal)
+            let data = onResolved(this.successVal)
             this.resolvePromise(resPromise, data, resolve, reject)
           } catch (e) {
             reject(e)
@@ -64,34 +102,37 @@ class MyPromise {
         })
         break;
       case REJECTED:
-        resPromise = new MyPromise((resolve, reject) => {
+        resPromise = new TestPromise((resolve, reject) => {
           try {
-            let data = rejectedFn(this.failedVal)
+            let data = onRejected(this.failVal)
             this.resolvePromise(resPromise, data, resolve, reject)
           } catch (e) {
             reject(e)
           }
         })
+        break;
       case PENDING:
-        resPromise = new MyPromise((resolve, reject) => {
-          const resolveFunction = () => {
+        resPromise = new TestPromise((resolve, reject) => {
+          const resolveFn = (value) => {
             try {
-              let data = resolve(this.successVal)
+              let data = onResolved(this.successVal)
               this.resolvePromise(resPromise, data, resolve, reject)
             } catch (e) {
               reject(e)
             }
           }
-          const rejectFunction = () => {
+
+          const rejectFn = (reason) => {
             try {
-              let data = reject(this.failedVal)
+              let data = onRejected(this.failVal)
               this.resolvePromise(resPromise, data, resolve, reject)
             } catch (e) {
               reject(e)
             }
           }
-          this.onResolvedCallbacks.push(resolveFunction)
-          this.onRejectedCallbacks.push(rejectFunction)
+
+          this.onResolvedCallbacks.push(resolveFn)
+          this.onRejectedCallbacks.push(rejectFn)
         })
       default:
         break;
@@ -100,68 +141,36 @@ class MyPromise {
     return resPromise
   }
 
-  catch(onRejected) {
-    this.then(null, onRejected)
-  }
-
   resolvePromise(resPromise, data, resolve, reject) {
     if (resPromise === data) {
       throw new TypeError('循环引用')
     }
-    if (!(data instanceof MyPromise)) {
+    if (!(data instanceof TestPromise) && !(typeof data === 'object' && data.then)) {
       return resolve(data)
     }
+
     try {
-      let then = data.then
-      const resolveFunction = (newData) => {
+      const then = data.then
+      const resolveFn = (newData) => {
         this.resolvePromise(resPromise, newData, resolve, reject)
       }
-      const rejectFunction = (err) => {
-        reject(err)
+      const rejectFn = (newData) => {
+        this.resolvePromise(resPromise, newData, resolve, reject)
       }
-      then.call(data, resolveFunction, rejectFunction)
+      then.call(data, resolveFn, rejectFn)
     } catch (e) {
       reject(e)
     }
   }
 
-  all(promises) {
-    return new MyPromise((resolve, reject) => {
-      const res = new Array(promises.length)
-      let count = 0
-
-      for (let i = 0; i < promises.length; i++) {
-        let curPromise = promises[i]
-        curPromise.then(data => {
-          res[i] = data
-          count++
-          if (count === promises.length) {
-            resolve(res)
-          }
-        }, reject)
-      }
-    })
+  catch(onRejected) {
+    this.then(null, onRejected)
   }
 
-  allSettled(promises) {
-    return MyPromise.all(
-      promises.map((promise, index) =>
-        promise
-        .then(value => ({ status: 'fulfilled', value })
-        .catch(reason => ({ status: 'rejected', reason }))
-      ))
+  finally(callback) { // 无论当前 Promise 是成功还是失败，调用finally之后都会执行 finally 中传入的函数，并且将值透传下去
+    this.then(
+      value => Promise.resolve(callback()).then(() => value),
+      reason => Promise.resolve(callback()).then(() => { throw reason })
     )
-  }
-
-  race(promises) {
-    return new MyPromise((resolve, reject) => {
-      for (let i = 0; i < promises.length; i++) {
-        let curPromise = promises[i]
-        if (!(curPromise instanceof MyPromise)) {
-          return reject(new TypeError('必须为MyPromise类型'))
-        }
-        curPromise.then(resolve, reject)
-      }
-    })
   }
 }
