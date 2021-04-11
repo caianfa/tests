@@ -155,7 +155,7 @@ class TestPromise {
         this.resolvePromise(resPromise, newData, resolve, reject)
       }
       const rejectFn = (newData) => {
-        this.resolvePromise(resPromise, newData, resolve, reject)
+        reject(newData)
       }
       then.call(data, resolveFn, rejectFn)
     } catch (e) {

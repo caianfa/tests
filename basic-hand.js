@@ -209,15 +209,62 @@ Function.prototype.apply2 = function(context, args) {
 }
 
 // 深拷贝
-function clone(target, map = new WeakMap()) {
-  if (target === null) return target
-  if (typeof target !== 'object') return target
-  if (map.get(target)) return map.get(target)
+function deepCopy(obj, map = new WeakMap()) {
+  const type = typeof obj
 
-  let cloneObj = Array.isArray(target) ? [] : {}
-  map.set(target, cloneObj)
-  for (const key in target) {
-    cloneObj[key] = clone(target[key])
+  if (obj === null || (type !== 'object' && type !== 'function')) return obj
+  if (obj instanceof Date) return Date(obj)
+  if (obj instanceof RegExp) return RegExp(obj)
+  if (map.has(obj)) return map.get(obj)
+
+  const target = type === 'function' ? eval(obj.toString()) : new obj.constructor();
+  map.set(obj, target);
+
+  [...Object.getOwnPropertyNames(obj), ...Object.getOwnPropertySymbols(obj)].forEach(key => {
+    target[key] = deepCopy(obj[key], map)
+  })
+
+  return target
+}
+
+// 实现trim
+String.prototype.trim2 = function() {
+  return this.replace(/^\s+|\s+$/g, '')
+}
+
+// 实现 promisify
+// fs.readFile('1.txt', { encode: 'utf8' }, (err, data) => {})
+function promisify(fn) {
+  return function(...args) {
+    return new Promise((resolve, reject) => {
+      fn(...args, (err, data) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
   }
-  return cloneObj
+}
+
+// co原理
+function co(gen) {
+  return new Promise((resolve, reject) => {
+    const iterator = gen()
+
+    function next(data) {
+      const { value, done } = iterator.next()
+      if (!done) {
+        // Promise.resolve(value) 的目的是将value promise化
+        Promise.resolve(value).then(data => {
+          next(data)
+        }, reject)
+      } else {
+        resolve(value)
+      }
+    }
+
+    next()
+  })
 }
