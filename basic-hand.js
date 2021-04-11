@@ -145,6 +145,18 @@ const arr = [1, [2, 3, 4], [5, 6, [7, 8]], 9]
 console.log([...flattenGenerator(arr)]);
 
 
+// 模拟实现forOf
+function forOf(obj, cb) {
+  if (typeof obj[Symbol.iterator] !== 'function') throw new TypeError('can not iterable')
+
+  const iterator = obj[Symbol.iterator]()
+  let result = iterator()
+  while(!result.done) {
+    cb(result.value)
+    result = iterator.next()
+  }
+}
+
 // 实现new  const n = new P()
 function newOperator(Constructor, ...args) {
   let obj = Object.create(Constructor.prototype)
@@ -268,3 +280,27 @@ function co(gen) {
     next()
   })
 }
+
+// reduce 实现 map
+Array.prototype.mapUsingReduce = function(callback, thisArg) {
+  return this.reduce((previous, current, index, array) => {
+    previous[index] = callback.call(thisArg, current, index, array)
+    return previous
+  }, [])
+}
+
+// 实现数组的负数索引
+function getArrayItemByIndex(arr) {
+  const proxy = new Proxy(arr, {
+    get(target, propKey, receiver) {  // receiver实质上就是 proxy自身
+        let index = Number(propKey)
+        if (index < 0) {
+          propKey = String(target.length + index)
+        }
+        return Reflect.get(target, propKey, receiver)
+    }
+  })
+  return proxy
+}
+const res = getArrayItemByIndex([1, 2, 3])
+console.log(res[-1]);
