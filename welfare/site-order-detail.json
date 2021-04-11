@@ -1,0 +1,456 @@
+[
+  {
+    "type": "package",
+    "name": "包裹层",
+    "style": [],
+    "dataSource": "planList",
+    "sub_entry": [
+      {
+        "renderType": "data",
+        "type": "package",
+        "name": "包裹层",
+        "style": {
+          "margin": "0.3rem 0.3rem 0",
+          "backgroundColor": "rgb(255, 254, 254)",
+          "padding": "0 0.3rem",
+          "boxShadow": "0 10px 30px 0 rgba(0,0,0,0.08)",
+          "borderRadius": "0.2rem",
+          "color": "#909090",
+          "fontSize": "0.28rem",
+          "position": "relative",
+          "overflow": "hidden"
+        },
+        "sub_entry": [
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>{{planName}}",
+            "value": "",
+            "style": {
+              "borderBottom": "1px solid #efefef",
+              "fontSize": "0.32rem",
+              "height": "1rem",
+              "color": "#333"
+            },
+            "uid": "6MUAWBT1"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>被保险人",
+            "value": "<p style=\"color: #464646\">{{name}}",
+            "textAlign": "between",
+            "style": {
+              "marginTop": "0.1rem",
+              "height": "0.6rem"
+            },
+            "uid": "6MUAWB3T23"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "statusType": "text",
+            "statusSource": "certType",
+            "statusMap": {
+              "I": "身份证",
+              "P": "护照",
+              "B": "出生证",
+              "GA": "港澳通行证",
+              "TW": "台湾通行证",
+              "GJ": "港澳居民来往内地通行证",
+              "TB": "台湾居民来往内地通行证 "
+            },
+            "label": "<p>证件类型",
+            "value": "<p style=\"color: #464646\">{{certTypeStr}}",
+            "textAlign": "between",
+            "style": {
+              "height": "0.6rem"
+            },
+            "uid": "6MUAWB3T3"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>证件号码",
+            "value": "<p style=\"color: #464646\">{{certNo}}",
+            "textAlign": "between",
+            "style": {
+              "height": "0.6rem"
+            },
+            "uid": "6MUAWB3T4"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>手机号码",
+            "value": "<p style=\"color:#464646\">{{mobile}}",
+            "textAlign": "between",
+            "style": {
+              "height": "0.6rem"
+            },
+            "uid": "6MUAWC4T"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "statusType": "text",
+            "statusSource": "socialInsurance",
+            "statusMap": {
+              "Y": "有社保",
+              "N": "无社保"
+            },
+            "label": "<p>有无社保",
+            "value": "<p style=\"color: #464646\">{{socialInsuranceStr}}",
+            "textAlign": "between",
+            "style": {
+              "height": "0.6rem"
+            },
+            "uid": "6MUAWB35"
+          },
+          {
+            "type": "cell",
+            "label": "<p>保障期限",
+            "value": "<p style=\"color: #464646\">{{effectiveDate}}至{{expiryDate}}",
+            "textAlign": "between",
+            "style": {
+              "height": "0.6rem",
+              "marginBottom": "0.1rem"
+            },
+            "uid": "6MUAWBT6"
+          },
+          {
+            "type": "cell",
+            "label": "<p style=\"color:#00BC70\">查看保障详情 > ",
+            "value": "<p style=\"color:#FF8100;font-size: 0.4rem\">¥{{premium}}",
+            "labelEvents": {
+              "id": "planModal",
+              "dataSourceKey": ""
+            },
+            "textAlign": "between",
+            "style": {
+              "borderTop": "1px solid #efefef",
+              "height": "1rem"
+            },
+            "uid": "6MUAWBT7"
+          },
+          {
+            "type": "stamp",
+            "statusSource": "status",
+            "statusMap": {
+              "4": [
+                {
+                  "type": "img",
+                  "src": "https://cdn-qcloud.zhongan.com/a00000/welfare/static/tag_wait.png",
+                  "style": {
+                    "width": "1.28rem"
+                  },
+                  "uid": "6MUAWBT001"
+                }
+              ],
+              "5": [
+                {
+                  "type": "img",
+                  "src": "https://cdn-qcloud.zhongan.com/a00000/welfare/static/tag_complete.png",
+                  "style": {
+                    "width": "1.28rem"
+                  },
+                  "uid": "6MUAWBT002"
+                }
+              ],
+              "6": [
+                {
+                  "type": "img",
+                  "src": "https://cdn-qcloud.zhongan.com/a00000/welfare/static/tag_cancel.png",
+                  "style": {
+                    "width": "1.28rem"
+                  },
+                  "uid": "6MUAWBT003"
+                }
+              ]
+            },
+            "style": {
+              "position": "absolute",
+              "width": "1.28rem",
+              "height": "0.9rem",
+              "right": "0.3rem",
+              "top": "0"
+            },
+            "sub_entry": [],
+            "uid": "6MUAW8101"
+          }
+        ]
+      }
+    ],
+    "uid": "6MUAWBTS3"
+  },
+  {
+    "type": "package",
+    "name": "包裹层",
+    "style": {
+      "margin": "0.3rem 0.3rem 0",
+      "backgroundColor": "rgb(255, 254, 254)",
+      "padding": "0 0.3rem",
+      "boxShadow": "0 10px 30px 0 rgba(0,0,0,0.08)",
+      "borderRadius": "0.2rem",
+      "color": "#909090",
+      "fontSize": "0.28rem"
+    },
+    "statusSource": "status",
+    "statusMap": {
+      "4": [
+        {
+          "type": "cell",
+          "name": "标题",
+          "label": "订单信息",
+          "value": "",
+          "style": {
+            "borderBottom": "1px solid #efefef",
+            "fontSize": "0.32rem",
+            "height": "1rem",
+            "color": "#333"
+          },
+          "uid": "6MUAWBT9"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>订单编号",
+          "value": "<p style=\"color: #464646\">{{orderNo}}",
+          "textAlign": "between",
+          "style": {
+            "marginTop": "0.15rem",
+            "height": "0.5rem"
+          },
+          "uid": "6MUAWBT10"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>创建时间",
+          "value": "<p style=\"color: #464646\">{{createTime}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.5rem"
+          },
+          "uid": "6MUAWBT11"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>付款时间",
+          "value": "<p style=\"color: #464646\">{{payTime}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.5rem",
+            "marginBottom": "0.15rem"
+          },
+          "uid": "6MUAWBT13"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p style=\"font-size: 0.3rem\">总保费",
+          "value": "<p style=\"color: #464646\">¥{{premium}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.8rem",
+            "paddingTop": "0.2rem",
+            "boxSizing": "border-box",
+            "color": "#333",
+            "borderTop": "1px solid #efefef"
+          },
+          "uid": "6MUAWBT12"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p style=\"font-size: 0.3rem\">实付款",
+          "value": "<p style=\"color: #FFA03D;font-size:0.4rem\">¥{{personalPay}}",
+          "textAlign": "between",
+          "style": {
+            "color": "#333",
+            "height": "0.8rem",
+            "paddingBottom": "0.2rem",
+            "boxSizing": "border-box"
+          },
+          "uid": "6MUAWBT15"
+        }
+      ],
+      "5": [
+        {
+          "type": "cell",
+          "name": "标题",
+          "label": "订单信息",
+          "value": "",
+          "style": {
+            "borderBottom": "1px solid #efefef",
+            "fontSize": "0.32rem",
+            "height": "1rem",
+            "color": "#333"
+          },
+          "uid": "6MUAWBT16"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>订单编号",
+          "value": "<p style=\"color: #464646\">{{orderNo}}",
+          "textAlign": "between",
+          "style": {
+            "marginTop": "0.15rem",
+            "height": "0.5rem"
+          },
+          "uid": "6MUAWBT17"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>创建时间",
+          "value": "<p style=\"color: #464646\">{{createTime}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.5rem"
+          },
+          "uid": "6MUAWBT18"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>付款时间",
+          "value": "<p style=\"color: #464646\">{{payTime}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.5rem",
+            "marginBottom": "0.15rem"
+          },
+          "uid": "6MUAWBT19"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p style=\"font-size: 0.3rem\">总保费",
+          "value": "<p style=\"color: #464646\">¥{{premium}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.8rem",
+            "paddingTop": "0.2rem",
+            "boxSizing": "border-box",
+            "color": "#333",
+            "borderTop": "1px solid #efefef"
+          },
+          "uid": "6MUAWBT20"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p style=\"font-size: 0.3rem\">实付款",
+          "value": "<p style=\"color: #FFA03D;font-size:0.4rem\">¥{{personalPay}}",
+          "textAlign": "between",
+          "style": {
+            "color": "#333",
+            "height": "0.8rem",
+            "paddingBottom": "0.2rem",
+            "boxSizing": "border-box"
+          },
+          "uid": "6MUAWBT22"
+        }
+      ],
+      "6": [
+        {
+          "type": "cell",
+          "name": "标题",
+          "label": "订单信息",
+          "value": "",
+          "style": {
+            "borderBottom": "1px solid #efefef",
+            "fontSize": "0.32rem",
+            "height": "1rem",
+            "color": "#333"
+          },
+          "uid": "6MUAWBT23"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>订单编号",
+          "value": "<p style=\"color: #464646\">{{orderNo}}",
+          "textAlign": "between",
+          "style": {
+            "marginTop": "0.15rem",
+            "height": "0.5rem"
+          },
+          "uid": "6MUAWBT24"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>创建时间",
+          "value": "<p style=\"color: #464646\">{{createTime}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.5rem"
+          },
+          "uid": "6MUAWBT25"
+        },
+        {
+          "type": "cell",
+          "name": "",
+          "label": "<p>取消时间",
+          "value": "<p style=\"color: #464646\">{{cancelTime}}",
+          "textAlign": "between",
+          "style": {
+            "height": "0.65rem",
+            "paddingBottom": "0.15rem",
+            "boxSizing": "border-box"
+          },
+          "uid": "6MUAWBT26"
+        }
+      ]
+    },
+    "sub_entry": [],
+    "uid": "6MUAWBT27"
+  },
+  {
+    "type": "whitespace",
+    "name": "辅助空白",
+    "title": "",
+    "isSelected": false,
+    "style": {
+      "height": "0.3rem"
+    },
+    "uid": "6SBTRRAW"
+  },
+  {
+    "type": "tabbar",
+    "name": "",
+    "tabs": [
+      {
+        "name": "首页",
+        "link": "/site/plan",
+        "params": {
+          "channelCode": 1,
+          "policyNo": 1,
+          "projectId": 1
+        },
+        "backgroundSrc": "https://cdn-qcloud.zhongan.com/a00000/welfare/my_plan_icon.png"
+      },
+      {
+        "name": "订单",
+        "link": "/site/order",
+        "params": {
+          "channelCode": 1,
+          "policyNo": 1,
+          "projectId": 1
+        },
+        "backgroundSrc": "https://cdn-qcloud.zhongan.com/a00000/welfare/my_order_icon.png"
+      }
+    ],
+    "style": {
+      "color": "#fff"
+    },
+    "activeStyle": {
+      "color": "#00bc70"
+    },
+    "uid": "2343453512"
+  }
+]

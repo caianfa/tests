@@ -1,0 +1,284 @@
+[
+  {
+    "renderType": "",
+    "type": "package",
+    "name": "包裹层",
+    "isSelected": false,
+    "style": [],
+    "dataSource": "planList",
+    "sub_entry": [
+      {
+        "renderType": "data",
+        "type": "package",
+        "name": "包裹层",
+        "isSelected": false,
+        "style": {
+          "margin": "15px 15px 0",
+          "backgroundColor": "rgb(255, 254, 254)",
+          "borderRadius": 10,
+          "padding": "0px 15px",
+          "border": "0px solid #00BC70",
+          "boxShadow": "0 5px 15px 0 rgba(0,0,0,0.04)"
+        },
+        "sub_entry": [
+          {
+            "type": "cell",
+            "name": "cell列表",
+            "textAlign": "between",
+            "isSelected": false,
+            "label": "<p style='font-size:16px;color:#333'>{{planName}}",
+            "style": {
+              "width": "100%",
+              "lineHeight": "50px",
+              "marginBottom": "8px",
+              "borderBottom": "1px solid #efefef"
+            },
+            "space": 0,
+            "uid": "SGGESBT"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>被保险人",
+            "value": "<p style=\"color:#464646\">{{name}}",
+            "textAlign": "between",
+            "style": {
+              "color": "#ccc",
+              "lineHeight": "28px",
+              "fontSize": "14px"
+            },
+            "uid": "6MUAWB3T53"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>证件类型",
+            "value": "<p style=\"color:#464646\">{{certTypeStr}}",
+            "textAlign": "between",
+            "style": {
+              "color": "#ccc",
+              "lineHeight": "28px",
+              "fontSize": "14px"
+            },
+            "statusType": "text",
+            "statusSource": "certType",
+            "statusMap": {
+              "I": "身份证",
+              "P": "护照",
+              "B": "出生证",
+              "GA": "港澳通行证",
+              "TW": "台湾通行证",
+              "GJ": "港澳居民来往内地通行证",
+              "TB": "台湾居民来往内地通行证 "
+            },
+            "uid": "6MUAWB3T43"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>证件号码",
+            "value": "<p style=\"color:#464646\">{{certNo}}",
+            "textAlign": "between",
+            "style": {
+              "color": "#ccc",
+              "lineHeight": "28px",
+              "fontSize": "14px"
+            },
+            "uid": "6MUAWB3T"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>有无社保",
+            "value": "<p style=\"color:#464646\">{{socialInsuranceStr}}",
+            "textAlign": "between",
+            "style": {
+              "color": "#ccc",
+              "lineHeight": "28px",
+              "fontSize": "14px"
+            },
+            "statusType": "text",
+            "statusSource": "socialInsurance",
+            "statusMap": {
+              "Y": "有社保",
+              "N": "无社保"
+            },
+            "uid": "6MUAWB3223"
+          },
+          {
+            "type": "cell",
+            "name": "",
+            "label": "<p>保障期限",
+            "value": "<p style=\"color:#464646\">{{effectiveDate}}至{{expiryDate}}",
+            "textAlign": "between",
+            "style": {
+              "color": "#ccc",
+              "lineHeight": "28px",
+              "fontSize": "14px"
+            },
+            "uid": "6MUAWB1T23"
+          },
+          {
+            "type": "cell",
+            "name": "cell列表",
+            "textAlign": "between",
+            "isSelected": false,
+            "labelClick": "",
+            "labelEvents": {
+              "id": "planModal",
+              "dataSourceKey": ""
+            },
+            "valueEvents": {
+              "id": "displayLayer",
+              "dataSourceKey": "checkboxVisible"
+            },
+            "crossConnectIndex": 1,
+            "label": "<span style='font-size:14px;color:#00BC70'>查看保障详情>",
+            "value": "<span style='line-height:30px;display:inline-block;font-size:20px;color:#FF8100'>¥{{price}}<em style='font-size:12px'>／年／人",
+            "style": {
+              "width": "100%",
+              "lineHeight": "30px",
+              "marginTop": "8px",
+              "borderTop": "1px solid #efefef",
+              "padding": "10px 0 8px"
+            },
+            "space": 0,
+            "uid": "AAADDFG"
+          }
+        ],
+        "uid": "12345ff"
+      }
+    ],
+    "uid": "SDFGHJ"
+  },
+  {
+    "renderType": "",
+    "type": "package",
+    "name": "包裹层",
+    "isSelected": false,
+    "style": {
+      "borderTop": "1px solid rgba(151,151,151,0.30)",
+      "backgroundColor": "#fff",
+      "position": "fixed",
+      "bottom": "0",
+      "zIndex": 9,
+      "left": 0,
+      "right": 0
+    },
+    "sub_entry": [
+      {
+        "type": "premiumCalc",
+        "needPoints": false,
+        "name": "保费计算",
+        "propsFieldName": "confirmPlan"
+      },
+      {
+        "type": "button",
+        "name": "按钮",
+        "viewType": 2,
+        "viewGap": 15,
+        "viewSize": "md",
+        "isSelected": false,
+        "style": {
+          "paddingLeft": 30,
+          "paddingRight": 30,
+          "paddingTop": 15,
+          "paddingBottom": 15,
+          "borderTop": "1px solid rgba(151,151,151,0.30)"
+        },
+        "sub_entry": [
+          {
+            "title": "取消订单",
+            "style": {
+              "backgroundColor": "rgba(119, 108, 173, 0)",
+              "color": "#00BC70",
+              "borderColor": "#00BC70",
+              "borderRadius": 50
+            },
+            "events": {
+              "id": "cancelOrder",
+              "dataSourceKey": "",
+              "params": {
+                "channelCode": 1,
+                "policyNo": 1,
+                "projectId": 1
+              }
+            },
+            "uid": "WYFXGFT5"
+          },
+          {
+            "title": "确认付款",
+            "style": {
+              "backgroundColor": "#00BC70",
+              "color": "#fff",
+              "borderRadius": 50,
+              "borderColor": "#00BC70"
+            },
+            "events": {
+              "id": "confirmOrderTips",
+              "dataSourceKey": "",
+              "nextEvents": {
+                "id": "confirmOrder",
+                "dataSourceKey": "confirmPlan",
+                "params": [],
+                "nextEvents": {
+                  "id": "payOrder",
+                  "dataSourceKey": "confirmPlan",
+                  "params": []
+                }
+              },
+              "params": []
+            },
+            "type": "",
+            "uid": "QDTPOTTJ"
+          }
+        ],
+        "uid": "VOA2LXF"
+      }
+    ],
+    "uid": "SHDFGJ"
+  },
+  {
+    "type": "whitespace",
+    "name": "辅助空白",
+    "title": "",
+    "isSelected": false,
+    "style": {
+      "height": 200
+    },
+    "uid": "6SBTRSAL"
+  },
+  {
+    "type": "tabbar",
+    "name": "",
+    "tabs": [
+      {
+        "name": "首页",
+        "link": "/site/plan",
+        "params": {
+          "channelCode": 1,
+          "policyNo": 1,
+          "projectId": 1
+        },
+        "backgroundSrc": "https://cdn-qcloud.zhongan.com/a00000/welfare/my_plan_icon.png"
+      },
+      {
+        "name": "订单",
+        "link": "/site/order",
+        "params": {
+          "channelCode": 1,
+          "policyNo": 1,
+          "projectId": 1
+        },
+        "backgroundSrc": "https://cdn-qcloud.zhongan.com/a00000/welfare/my_order_icon.png"
+      }
+    ],
+    "style": {
+      "color": "#fff"
+    },
+    "activeStyle": {
+      "color": "#00bc70"
+    },
+    "uid": "2343453512"
+  }
+]
