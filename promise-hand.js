@@ -15,6 +15,20 @@ class TestPromise {
     })
   }
 
+  static retry(promiseFn, times = 3) { // 成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject
+    return new TestPromise(async (resolve, reject) => {
+      while (times--) {
+        try {
+          const result = await promiseFn()
+          resolve(result)
+          break
+        } catch(e) {
+          if (!times) reject(e)
+        }
+      }
+    })
+  }
+
   static all(promises) {
     return new TestPromise((resolve, reject) => {
       let count = 0

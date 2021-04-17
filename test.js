@@ -71,3 +71,46 @@ function myInstanceOf(left, right) {
     proto = Object.getPrototypeOf(proto)
   }
 }
+
+
+
+
+
+class Queue {
+    constructor() {
+        this.queue = [];
+        this.timer = null;
+        this.pro = Promise.resolve();
+    }
+    task(time, fn) {
+        this.queue.push([time, fn]);
+        return this;
+    };
+    start () {
+        this.queue.forEach((item) => {
+            this.pro = this.pro.then(() => {
+                return new Promise((resolve, reject) => {
+                    this.timer = setTimeout(() => {
+                        resolve(item[1]());
+                    }, item[0]);
+                });
+            });
+        });
+    };
+    stop() {
+        this.pro = Promise.reject();
+        clearTimeout(this.timer);
+    }
+}
+
+const q = new Queue();
+q.task(1000, () => {
+    console.log(1)
+})
+.task(2000, () => {
+    console.log(2)
+})
+.task(1000, () => {
+    console.log(3)
+})
+.start()
