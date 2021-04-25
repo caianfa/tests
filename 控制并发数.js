@@ -127,22 +127,29 @@ limitRequest2(
 )
 
 
-
-
 class Scheduler {
-  constructor(limit) {
-    this.limit = 2
-    this.waiters = []
+  constructor(maxCount) {
+    this.waitQueue = []
+    this.count = 0
+    this.maxCount = maxCount
   }
+
   add(promiseCreator) {
-    if (this.limit > 0) {
-      this.limit--
-      promiseCreator().then(() => {
-        this.limit++
-      })
+    if (this.count < this.maxCount) {
+      this.count += 1
+      return this.run(promiseCreator)
     } else {
-      this.waiters.push(promiseCreator)
+      this.waitQueue.push(() => promiseCreator())
     }
+  }
+
+  run(promiseCreator) {
+    promiseCreator().then(() => {
+      this.count -= 1
+      if (this.waitQueue.length > 0) {
+        this.run(this.waitQueue.shift())
+      }
+    })
   }
 }
 
