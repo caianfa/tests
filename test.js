@@ -114,3 +114,30 @@ q.task(1000, () => {
     console.log(3)
 })
 .start()
+
+
+
+// 快速排序
+function quickSort(arr) {
+  if (arr.length <= 1) return arr
+
+  let index = Math.floor(arr.length / 2)
+  let pivot = arr.splice(index, 1)[0]
+  let left = []
+  let right = []
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > pivot) {
+      right.push(arr[i])
+    } else {
+      left.push(arr[i])
+    }
+  }
+
+  return quickSort(left).concat([pivot], quickSort(right))
+}
+
+// 归并排序
+function mergeSort(arr) {
+
+}
