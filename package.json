@@ -1,0 +1,55 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "EventEmitter.js",
+  "dependencies": {
+    "@banmafe/zebra-egg-sequelize": "^1.0.2",
+    "@bfe/air-request": "^2.2.1",
+    "@block/helper": "^1.1.0",
+    "@gfe/zebra-typeorm-client": "^1.0.5",
+    "@kl/h5guard": "^0.1.7",
+    "@mt-material/security-auth-manage": "^0.0.2-alpha.0",
+    "@nibfe/h5guard-request": "^1.0.2",
+    "@nibfe/rome-cli-plugin-project-build": "^0.2.3",
+    "@softarc/native-federation": "^1.1.1",
+    "@thrift-api/meeting-zoommetting": "^1.5.0-RELEASE",
+    "@throne/plugin-white-screen": "^0.1.3",
+    "i": "^0.3.7",
+    "mobx-react": "^7.2.1",
+    "npm": "^8.3.0",
+    "sc-cli": "^0.0.16",
+    "za-fetch-api": "^2.7.2",
+    "za-glove": "^0.2.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-angular": "^13.1.0",
+    "@mfe/precommit-eslint": "^2.1.3",
+    "@nibfe/react-cli-plugin-vite": "0.0.4",
+    "@wmfe/eslint-config-mt": "^0.5.9",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.1",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js,.ts,.vue . && prettier --check .",
+    "lint:fix": "eslint --fix --ext .js,.ts,.vue . && prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caianfa/tests.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caianfa/tests/issues"
+  },
+  "homepage": "https://github.com/caianfa/tests#readme"
+}
