@@ -195,14 +195,14 @@ class TestPromise {
     this.status = 'pending'
     this.onResolvedCallbacks = []
     this.onRejectedCallbacks = []
-    this.suceessVal = null
+    this.successVal = null
     this.failVal = null
 
     const resolve = (value) => {
       setTimeout(() => {
         if (this.status !== 'pending') return
         this.status = 'resolve'
-        this.suceessVal = value
+        this.successVal = value
         this.onResolvedCallbacks.forEach(fn => fn())
       }, 0);
     }
@@ -250,7 +250,7 @@ class TestPromise {
       case 'resolve':
         resPromise = new TestPromise((resolve, reject) => {
           try {
-            let data = onResolved(this.suceessVal)
+            let data = onResolved(this.successVal)
             this.resolvePromise(resPromise, data, resolve, reject)
           } catch(e) {
             reject(e)
@@ -271,7 +271,7 @@ class TestPromise {
         resPromise = new TestPromise((resolve, reject) => {
           const resolveFn = () => {
             try {
-              let data = onResolved(this.suceessVal)
+              let data = onResolved(this.successVal)
               this.resolvePromise(resPromise, data, resolve, reject)
             } catch(e) {
               reject(e)

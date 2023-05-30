@@ -28,5 +28,19 @@
   <div class="outer">
     <div class="inner"></div>
   </div>
+  <script>
+    try {
+      chrome.runtime.sendMessage('123', {
+        message: 'hasExtension'
+      }, res => {
+        if (res && res.extension) {
+          console.log('扩展存在');
+        }
+      })
+    } catch (error) {
+      console.log(error.message);
+      console.log('扩展不存在');
+    }
+  </script>
 </body>
 </html>
