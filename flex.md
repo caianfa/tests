@@ -10,7 +10,7 @@
    flex-basis 设置基准大小
        有几个点需要注意的是
            在不伸缩的情况下，flex-basis给子容器设置大小才会覆盖(width|height)值， 否则按比例分配给子容器。
-           当主轴为横向时，即(flex-direction：row | row-reverse) flex-basis设置的大小为宽度，并且会覆盖witdh值
+           当主轴为横向时，即(flex-direction：row | row-reverse) flex-basis设置的大小为宽度，并且会覆盖width值
            当主轴为纵向时，即(flex-direction：column | column-reverse) flex-basis设置的大小为高度，并且会覆盖height值
 
 ## flex取值

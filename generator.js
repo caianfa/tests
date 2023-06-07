@@ -33,17 +33,19 @@ itertorable[Symbol.iterator] = function () {
 // 执行器 通常，我们把执行生成器的代码封装成一个函数，并把这个执行生成器代码的函数称为执行器,co 模块就是一个著名的执行器
 // co的原理
 
-function co(iterator) {
+function run(gen) {
   return new Promise((resolve, reject) => {
+    const iterator = gen()
+
     function next(data) {
-      let { value, done } = iterator.next()
+      const { value, done } = iterator.next()
+
       if (!done) {
         Promise.resolve(value).then(data => {
           next(data)
         }, reject)
-      } else {
-        resolve(value)
       }
+      resolve(value)
     }
 
     next()
