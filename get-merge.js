@@ -7,6 +7,7 @@
 // a[0].b => a.0.b
 function get(obj, path, defaultValue = undefined) {
   const paths = path.replace(/\[(\d+)\]/g, '.$1').split('.')
+  console.log(paths);
   let result = obj
 
   for (const p of paths) {
@@ -20,3 +21,14 @@ function get(obj, path, defaultValue = undefined) {
 }
 
 console.log(get({ a: [{ b: 321 }]}, 'a[0].b', 3));
+
+
+ // ----------------------
+
+
+console.log(get({ a: [{ b: 321 }]}, 'a[0].b', 3));
+
+function get2(obj, path, defaultValue) {
+  // /\[(\d+)\]/g
+  const arr = path.replace(/\[(\d+)\]/g, '$1').split('.')
+}

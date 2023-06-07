@@ -206,10 +206,6 @@ class LRUCache {
   }
 }
 
-
-
-
-
 var list = [
   { id: 1, parentId: 0, name: "root" },
   { id: 2, parentId: 1, name: "node1" },
@@ -317,13 +313,15 @@ GPU进程
 */
 
 /*
-页面渲染流程：
-
 性能优化的相关策略：
   浏览器相关
     HTTP2.0改造
   运行时相关
     优化加载顺序
+    DNS预解析：静态资源域名、请求域名做 dns-prefetching
+    preconnect: 预连接
+      在慢速网络中建立连接通常需要消耗大量时间，尤其是在涉及安全连接时
+      因为它可能涉及到 DNS 查找、重定向以及用于处理用户请求而与最终服务器的多次往返
     预加载 preload
     预请求 prefetch
     异步加载 async defer
@@ -335,6 +333,8 @@ GPU进程
     交互性导入
     长列表使用虚拟列表
     react运行时优化(减少组件渲染次数)：
+      传递不可变数据
+      精细化渲染
       函数组件：memo useMemo useCallback做函数缓存
               Context导致的子组件不必要重复渲染的问题：重写默认的Provider，通过useRef创建 contextValue，
               保证value的引用不发生变化,value 可以存储值和函数
@@ -342,6 +342,27 @@ GPU进程
   编译时相关
     Tree Shaking
     基于Bundle做代码分割
+*/
 
+/*
+https://juejin.cn/post/6847902222349500430#heading-7
+页面渲染流程：
+*/
 
+/*
+https://juejin.cn/post/6844903795776815117
+HTTPS原理:
+*/
+
+/*
+浏览器垃圾回收机制
+*/
+
+/*
+Webpack
+  loader plugin tapable
+*/
+
+/*
+nest相关
 */
