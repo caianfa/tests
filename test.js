@@ -241,7 +241,18 @@ function listToTree(list) {
 const res = listToTree(list)
 // console.log(JSON.stringify(res, null, 4));
 
+// for (const a of arr) {  }
+function forOf(obj, cb) {
+  if (typeof obj[Symbol.iterator] !== 'function') throw new Error('error');
 
+  const iterator = obj[Symbol.iterator]();
+  let result = iterator();
+
+  while(!result.done) {
+    cb(result.value)
+    result = iterator.next();
+  }
+}
 
 
 function run(gen) {
