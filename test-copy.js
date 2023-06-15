@@ -1,28 +1,23 @@
 class Task {
   constructor(){
       this.queue = []
-      Promise.resolve().then(() => {
-        let sequence = Promise.resolve();
-        this.queue.forEach((item) => {
-          sequence = sequence.then(item)
-        })
+      Promise.resolve().then(async () => {
+        // let sequence = Promise.resolve();
+        // this.queue.forEach((item) => {
+        //   sequence = sequence.then(item)
+        // })
+        for (const task of this.queue) {
+          await task();
+        }
       })
   }
   log(text) {
-      this.queue.push(async () => await console.log(text))
+      this.queue.push(() => console.log(text))
       return this
   }
-  async sleep(time) {
-      new Promise((resolve) => {
-          setTimeout(() => {
-              // console.log('resolve');
-              resolve()
-          }, time * 1000)
-      })
-  }
   wait(time) {
-      this.queue.push(async () => {
-        await new Promise((resolve) => {
+      this.queue.push(() => {
+        return new Promise((resolve) => {
           setTimeout(() => {
               console.log('resolve');
               resolve()
