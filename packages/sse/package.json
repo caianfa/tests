@@ -1,17 +1,15 @@
 {
-  "name": "tests",
+  "name": "mcp",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:sse": "pnpm --filter sse run start"
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.6.3",
-  "dependencies": {
-    "typescript": "^5.8.3"
-  }
+  "packageManager": "pnpm@10.6.3"
 }
